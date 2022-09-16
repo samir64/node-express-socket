@@ -2,7 +2,7 @@
 
 ## Installation instruction:
 
-`npm install express-socket`
+`npm install node-express-socket`
 
 ## Use:
 

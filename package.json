@@ -1,8 +1,8 @@
 {
   "name": "node-express-socket",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A structure to add socket manager in express routes",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "dev": "nodemon server.js",
     "start": "node server.js",
@@ -13,6 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.18.1",
+    "node-express-socket": "^1.0.2",
     "socket.io": "^4.5.2"
   }
 }
