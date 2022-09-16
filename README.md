@@ -34,10 +34,7 @@ app.use(router);
 
 ```
 // 1) Create and connect socket object
-const socket = io({
-      path: '/ws',
-      transports: ['websocket']
-    });
+const socket = io();
 
 // 2) Send request using WebSocket
 socket.emit('/test1/joe/gandomi?qp1=v1', {

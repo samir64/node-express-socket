@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Socket.IO chat</title>
+    <script type="module">
+      import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
+
+      const socket = io();
+      socket.io.on("error", console.error);
+      socket.emit("/test1/jack/gonjishke?q=123", { d1: "v1" });
+      socket.on("/test1/*/*", data=>{
+        console.log(data);
+      });
+    </script>
+</head>
+<body>
+</body>
+</html>

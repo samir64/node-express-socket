@@ -1,16 +1,21 @@
 const express = require('express');
 const socket = require("node-express-socket");
+const path = require("path");
 const router = express.Router();
 const app = express();
 
-console.log(socket);
-
 router.socket("/test1/:fname/:lname", (req, res) => {
+  console.log("Handled by socket");
   res.send({q:req.query, b:req.body, p:req.params});
 });
 
 router.get("/test1/:fname/:lname", (req, res) => {
+  console.log("Handled by http");
   res.send({q:req.query, b:req.body, p:req.params});
+});
+
+router.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname+'/index.html'));
 });
 
 const server = app.listen(8000, () => {
