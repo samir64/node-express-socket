@@ -1,0 +1,12 @@
+version: "3.3"
+services:
+  node-express-socket:
+    image: node
+    working_dir: /home/node
+    volumes:
+      - .:/home/node
+    ports:
+      - 8100:8000
+    command: /bin/sh -c "npm install && npm install -g nodemon && npm run dev && while sleep 1000; do :; done"
+    user: "${UID}:${GID}"
+#    user: "1000:1000"

@@ -1,0 +1,55 @@
+const express = require("express");
+const Router = express.Router;
+
+express.Router = options => {
+  const router = Router(options);
+
+  Router.socket = (path, callback) => {
+    router.use(path, (req, res, next) => {
+      if (req.method === "SOCKET") {
+        callback(req, {...res, send: res.send(path.replace(/\/:\w+/g, "/*"))}, next);
+      } else {
+        next();
+      }
+    });
+  };
+
+  return router;
+};
+
+module.exports = (app, server) => (req, res, next) => {
+  const send = socket => path => p => {
+    socket.emit(path, p);
+  };
+
+  const getQueryString = (queryString = "")=> {
+    let result = queryString;
+
+    result = result.split("?")?.[1];
+    result = result?.split("&");
+    result = result?.reduce((res, cur) => ({...res, [cur.split("=")[0]]: cur.split("=")[1]}), {});
+
+    return result;
+  };
+
+  const io = require('socket.io')(server, {
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"],
+      credentials: true,
+      // allowedHeaders: ["my-custom-header"],
+    },
+  });
+
+  io.on('connection', socket => {
+    console.log(`User connected: ${socket.id}`);
+
+    socket.onAny((eventName, data) => {
+      req.method = "SOCKET";
+      req.url = "/" + eventName;
+
+      app._router.handle({...req, query: getQueryString(eventName), body: data, path: "/" + eventName}, {...res, setHeader: ()=>{}, send: send(socket)}, next);
+    });
+  });
+  next();
+};
