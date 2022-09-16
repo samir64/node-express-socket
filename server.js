@@ -5,13 +5,11 @@ const router = express.Router();
 const app = express();
 
 router.socket("/test1/:fname/:lname", (req, res) => {
-  console.log("Handled by socket");
-  res.send({q:req.query, b:req.body, p:req.params});
+  res.send({m:req.method, q:req.query, b:req.body, p:req.params});
 });
 
 router.get("/test1/:fname/:lname", (req, res) => {
-  console.log("Handled by http");
-  res.send({q:req.query, b:req.body, p:req.params});
+  res.send({m:req.method, q:req.query, b:req.body, p:req.params});
 });
 
 router.get("/", (req, res) => {
