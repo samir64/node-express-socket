@@ -1,11 +1,16 @@
 const express = require('express');
-const socket = require("node-express-socket");
+const socket = require("./express-socket");
 const path = require("path");
 const router = express.Router();
 const app = express();
 
-router.socket("/test1/:fname/:lname", (req, res) => {
+router.socket("/test1/:fname/:lname", (req, res, next) => {
   res.send({m:req.method, q:req.query, b:req.body, p:req.params});
+  next();
+});
+
+router.socket("/test1/:fname/:lname", (req, res) => {
+  res.send("Hi");
 });
 
 router.get("/test1/:fname/:lname", (req, res) => {

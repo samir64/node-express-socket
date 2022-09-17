@@ -4,14 +4,14 @@ const Router = express.Router;
 express.Router = options => {
   const router = Router(options);
 
-  Router.socket = (path, callback) => {
-    router.use(path, (req, res, next) => {
+  Router.socket = (path, ...callbacks) => {
+    router.use(path, ...[callbacks.map(callback => (req, res, next) => {
       if (req.method === "SOCKET") {
         callback(req, {...res, send: res.send(path.replace(/\/:\w+/g, "/*"))}, next);
       } else {
         next();
       }
-    });
+    })]);
   };
 
   return router;
@@ -46,7 +46,7 @@ module.exports = (app, server) => (req, res, next) => {
     socket.onAny((eventName, data) => {
       req.method = "SOCKET";
       req.url = "/" + eventName;
-      cosnole.log(eventName);
+      console.log(eventName);
 
       app._router.handle({...req, query: getQueryString(eventName), body: data, path: "/" + eventName}, {...res, setHeader: ()=>{}, send: send(socket)}, next);
     });
