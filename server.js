@@ -5,20 +5,20 @@ const router = express.Router();
 const app = express();
 
 router.socket("/test1/:fname/:lname", (req, res, next) => {
-  res.send({m:req.method, q:req.query, b:req.body, p:req.params});
+  res.send({ m: req.method, q: req.query, b: req.body, p: req.params });
   next();
 });
 
-router.socket("/test1/:fname/:lname", (req, res) => {
+router.socket("/test1/:fname/:lname", (req, res, next) => {
   res.send("Hi");
 });
 
 router.get("/test1/:fname/:lname", (req, res) => {
-  res.send({m:req.method, q:req.query, b:req.body, p:req.params});
+  res.send({ m: req.method, q: req.query, b: req.body, p: req.params });
 });
 
 router.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname+'/index.html'));
+  res.sendFile(path.join(__dirname + '/index.html'));
 });
 
 const server = app.listen(8000, () => {

@@ -1,6 +1,6 @@
 {
   "name": "node-express-socket",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "A structure to add socket manager in express routes",
   "main": "index.js",
   "scripts": {
@@ -11,6 +11,13 @@
   },
   "author": "Samir",
   "license": "MIT",
+  "keywords": [
+    "nodejs",
+    "express",
+    "websocket",
+    "socket-io",
+    "expressjs"
+  ],
   "dependencies": {
     "express": "^4.18.1",
     "node-express-socket": "^1.0.2",
