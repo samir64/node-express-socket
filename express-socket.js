@@ -7,7 +7,10 @@ express.Router = options => {
   Router.socket = (path, ...callbacks) => {
     router.use(path, ...callbacks.map(callback => (req, res, next) => {
       if (req.method === "SOCKET") {
-        callback(req, { ...res, send: res.send.socketSend(path.replace(/\/:\w+/g, "/*")) }, next);
+        const pathPrefixFinder = path.replace(/\/:\w+/g, "/.*") + "$";
+        const prefix = req.path.replace(new RegExp(pathPrefixFinder), "");
+        const fullPath = prefix + path.replace(/\/:\w+/g, "/*");
+        callback(req, { ...res, send: res.send.socketSend(fullPath) }, next);
       } else {
         next();
       }
