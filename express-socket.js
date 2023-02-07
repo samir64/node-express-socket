@@ -42,17 +42,11 @@ module.exports = (app, server) => (req, res, next) => {
 
     const mainSend = p => {
       if (!!broadcast) {
-        // io.emit(reqPath, p);
         sendToAll(reqPath, p);
         broadcast = false;
       } else {
         if (!!toSocketId) {
           sendToUsers(toSocketId, reqPath, p);
-          // let sto = io;
-          // toSocketId.forEach(id => {
-          //   sto = sto.to(id);
-          // })
-          // sto.emit(reqPath, p);
           toSocketId = undefined;
         } else {
           socket.emit(reqPath, p);
