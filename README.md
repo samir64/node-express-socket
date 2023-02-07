@@ -87,6 +87,37 @@ app.use((req, res, next) => {
 });
 </pre>
 
+Send message to specific user
+
+<pre>
+const express = require('express');
+const socket = require("node-express-socket");
+const router = express.Router();
+const app = express();
+let users = [/*user ids*/];
+
+router.socket("/test1/:fname/:lname", (req, res) => {
+  <b>users.push(req.socketId);</b>
+  <b>res.send.to(...users)("Hi");</b>
+  res.send({m:req.method, q:req.query, b:req.body, p:req.params});
+});
+
+router.get("/test1/:fname/:lname", (req, res) => {
+  res.send({m:req.method, q:req.query, b:req.body, p:req.params});
+});
+
+const server = app.listen(8000, () => {
+  console.log(`Server running at port:8000`);
+});
+
+app.use(socket(app, server));
+app.use(router);
+
+app.use((req, res, next) => {
+  res.status(404).send("404 - not found");
+});
+</pre>
+
 ### Client side:
 
 ```
