@@ -160,7 +160,7 @@ router.socket("/test1/:fname/:lname", (req, res) => {
 });
 
 router.get("/test1/:fname/:lname", (req, res) => {
-  <b>const sckRes = express().socketResponse</b> // Check if any socket connection has exists
+  <b>const sckRes = express().socketResponse</b> // Use a variable to check if any socket connection has exists and call it
   <b>if (!!sckRes) sckRes("/test1/*/*", "Hi");</b> // For broadcast messaging
   <b>if (!!sckRes) sckRes("/test1/*/*", "Hi", "/*user1 id*/", "/*user2 id*/", ...);</b> // For sending message to specific users
   res.send({m:req.method, q:req.query, b:req.body, p:req.params});
