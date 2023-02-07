@@ -22,13 +22,42 @@ express.Router = options => {
 
 module.exports = (app, server) => (req, res, next) => {
   const send = socket => {
+    let toSocketId;
+    let reqPath = req.path;
+
     const mainSend = p => {
-      socket.emit(req.path, p);
+      if (!!toSocketId) {
+        socket.to(toSocketId).emit(reqPath, p);
+        toSocketId = undefined;
+      } else {
+        socket.emit(reqPath, p);
+      }
     };
 
-    mainSend.socketSend = path => p => {
-      socket.emit(path, p);
+    const socketSend = path => {
+      reqPath = path;
+
+      return mainSend;
     };
+
+    const toUser = (...id) => {
+      toSocketId = id;
+
+      return mainSend;
+    };
+
+    mainSend.socketSend = socketSend;
+    mainSend.to = toUser;
+
+    // if (!!to) {
+    //   socket(to).emit(path, p);
+    // } else {
+    //   socket.emit(path, p);
+    // }
+
+    // mainSend.socketSend.to = id => {
+    //   to = id;
+    // }
 
     return mainSend;
   };

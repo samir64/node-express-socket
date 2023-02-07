@@ -4,7 +4,15 @@ const path = require("path");
 const router = express.Router();
 const app = express();
 
+const userIds = [];
+
 router.socket("/test1/:fname/:lname", (req, res, next) => {
+  if (!userIds.some(uid => uid === req.socketId)) {
+    userIds.push(req.socketId);
+  }
+  const otherIds = userIds.filter(uid => uid !== req.socketId);
+
+  res.send.to(...otherIds)("Hi others");
   res.send({ method: req.method, query: req.query, body: req.body, param: req.params, socketId: req.socketId });
   next();
 });
