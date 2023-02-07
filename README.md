@@ -118,6 +118,35 @@ app.use((req, res, next) => {
 });
 </pre>
 
+Send broadcast message
+
+<pre>
+const express = require('express');
+const socket = require("node-express-socket");
+const router = express.Router();
+const app = express();
+
+router.socket("/test1/:fname/:lname", (req, res) => {
+  <b>res.send.broadcast("Hi");</b>
+  res.send({m:req.method, q:req.query, b:req.body, p:req.params});
+});
+
+router.get("/test1/:fname/:lname", (req, res) => {
+  res.send({m:req.method, q:req.query, b:req.body, p:req.params});
+});
+
+const server = app.listen(8000, () => {
+  console.log(`Server running at port:8000`);
+});
+
+app.use(socket(app, server));
+app.use(router);
+
+app.use((req, res, next) => {
+  res.status(404).send("404 - not found");
+});
+</pre>
+
 ### Client side:
 
 ```
