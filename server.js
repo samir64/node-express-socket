@@ -25,5 +25,9 @@ const server = app.listen(8000, () => {
   console.log(`🚀 Server running at port:8000`);
 });
 
-app.use(socket(app, server));
 app.use(router);
+app.use(socket(app, server));
+
+app.use((req, res) => {
+  res.status(400).send({ result: "not found" });
+})

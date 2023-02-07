@@ -7,7 +7,7 @@ express.Router = options => {
   Router.socket = (path, ...callbacks) => {
     router.use(path, ...callbacks.map(callback => (req, res, next) => {
       if (req.method === "SOCKET") {
-        callback(req, { ...res, send: res.send(path.replace(/\/:\w+/g, "/*")) }, next);
+        callback(req, { ...res, send: res.send.socketSend(path.replace(/\/:\w+/g, "/*")) }, next);
       } else {
         next();
       }
@@ -18,8 +18,16 @@ express.Router = options => {
 };
 
 module.exports = (app, server) => (req, res, next) => {
-  const send = socket => path => p => {
-    socket.emit(path, p);
+  const send = socket => {
+    const mainSend = p => {
+      socket.emit(req.path, p);
+    };
+
+    mainSend.socketSend = path => p => {
+      socket.emit(path, p);
+    };
+
+    return mainSend;
   };
 
   const getQueryString = (queryString = "") => {
