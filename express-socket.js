@@ -21,6 +21,20 @@ express.Router = options => {
 };
 
 module.exports = (app, server) => (req, res, next) => {
+  const sendToUsers = (ids, path, p) => {
+    if (ids.length > 0) {
+      let sto = io;
+      ids.forEach(id => {
+        sto = sto.to(id);
+      })
+      sto.emit(path, p);
+    }
+  }
+
+  const sendToAll = (path, p) => {
+    io.emit(path, p);
+  }
+
   const send = socket => {
     let toSocketId;
     let broadcast = false;
@@ -28,11 +42,17 @@ module.exports = (app, server) => (req, res, next) => {
 
     const mainSend = p => {
       if (!!broadcast) {
-        socket.broadcast.emit(reqPath, p);
+        // io.emit(reqPath, p);
+        sendToAll(reqPath, p);
         broadcast = false;
       } else {
         if (!!toSocketId) {
-          socket.to(toSocketId).emit(reqPath, p);
+          sendToUsers(toSocketId, reqPath, p);
+          // let sto = io;
+          // toSocketId.forEach(id => {
+          //   sto = sto.to(id);
+          // })
+          // sto.emit(reqPath, p);
           toSocketId = undefined;
         } else {
           socket.emit(reqPath, p);
@@ -62,16 +82,6 @@ module.exports = (app, server) => (req, res, next) => {
     mainSend.to = toUser;
     mainSend.broadcast = toAll;
 
-    // if (!!to) {
-    //   socket(to).emit(path, p);
-    // } else {
-    //   socket.emit(path, p);
-    // }
-
-    // mainSend.socketSend.to = id => {
-    //   to = id;
-    // }
-
     return mainSend;
   };
 
@@ -96,6 +106,14 @@ module.exports = (app, server) => (req, res, next) => {
 
   io.on('connection', socket => {
     console.log(`User connected: ${socket.id}`);
+    express.application.socketResponse = (path, p, ...ids) => {
+      if (ids.length === 0) {
+        sendToAll(path, p);
+      } else {
+        sendToUsers(ids, path, p);
+      }
+    };
+
     socket.onAny((eventName, data) => {
       const path = "/" + eventName.replace(/^\/+/, "").replace(/\/+$/, "").trim();
       req.method = "SOCKET";
