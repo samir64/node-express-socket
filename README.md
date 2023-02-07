@@ -30,6 +30,34 @@ app.use(socket(app, server));
 app.use(router);
 ```
 
+If you want to use a general route for 'Not found', it should be after socket use command.
+
+```
+const express = require('express');
+const socket = require("node-express-socket");
+const router = express.Router();
+const app = express();
+
+router.socket("/test1/:fname/:lname", (req, res) => {
+  res.send({m:req.method, q:req.query, b:req.body, p:req.params});
+});
+
+router.get("/test1/:fname/:lname", (req, res) => {
+  res.send({m:req.method, q:req.query, b:req.body, p:req.params});
+});
+
+const server = app.listen(8000, () => {
+  console.log(`Server running at port:8000`);
+});
+
+app.use(socket(app, server));
+app.use(router);
+
+<b>app.use((req, res, next) => {
+  res.status(404).send("404 - not found");
+});</b>
+```
+
 ### Client side:
 
 ```
