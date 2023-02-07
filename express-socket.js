@@ -55,12 +55,13 @@ module.exports = (app, server) => (req, res, next) => {
   io.on('connection', socket => {
     console.log(`User connected: ${socket.id}`);
     socket.onAny((eventName, data) => {
-      eventName = eventName.replace(/^\/+/, "").replace(/\/+$/, "");
+      const path = eventName.replace(/^\/+/, "").replace(/\/+$/, "").trim();
       req.method = "SOCKET";
-      req.url = "/" + eventName;
-      console.log(eventName);
+      req.url = path;
 
-      app._router.handle({ ...req, query: getQueryString(eventName), body: data, path: "/" + eventName }, { ...res, setHeader: () => { }, send: send(socket) }, next);
+      // console.log(path);
+
+      app._router.handle({ ...req, query: getQueryString(eventName), body: data, path }, { ...res, setHeader: () => { }, send: send(socket) }, next);
     });
   });
 
