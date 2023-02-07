@@ -5,7 +5,7 @@ const router = express.Router();
 const app = express();
 
 router.socket("/test1/:fname/:lname", (req, res, next) => {
-  res.send({ m: req.method, q: req.query, b: req.body, p: req.params });
+  res.send({ method: req.method, query: req.query, body: req.body, param: req.params, socketId: req.socketId });
   next();
 });
 
@@ -14,7 +14,7 @@ router.socket("/test1/:fname/:lname", (req, res, next) => {
 });
 
 router.get("/test1/:fname/:lname", (req, res) => {
-  res.send({ m: req.method, q: req.query, b: req.body, p: req.params });
+  res.send({ method: req.method, query: req.query, body: req.body, param: req.params, socketId: req.socketId });
 });
 
 router.get("/", (req, res) => {

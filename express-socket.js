@@ -58,6 +58,7 @@ module.exports = (app, server) => (req, res, next) => {
       const path = "/" + eventName.replace(/^\/+/, "").replace(/\/+$/, "").trim();
       req.method = "SOCKET";
       req.url = path;
+      req.socketId = socket.id;
 
       // console.log(path);
 
