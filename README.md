@@ -32,7 +32,7 @@ app.use(router);
 
 If you want to use a general route for 'Not found', it should be after socket use command.
 
-```
+<pre>
 const express = require('express');
 const socket = require("node-express-socket");
 const router = express.Router();
@@ -56,7 +56,7 @@ app.use(router);
 <b>app.use((req, res, next) => {
   res.status(404).send("404 - not found");
 });</b>
-```
+</pre>
 
 ### Client side:
 
