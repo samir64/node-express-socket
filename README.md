@@ -6,6 +6,8 @@
 
 ## Use:
 
+**Important:** It only can use by `Router` and you can't use by `express()` method like as `express().socket`
+
 ### Server side:
 
 ```
