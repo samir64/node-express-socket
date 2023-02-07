@@ -1,6 +1,6 @@
 {
   "name": "node-express-socket",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "A structure to add socket manager in express routes",
   "main": "index.js",
   "scripts": {

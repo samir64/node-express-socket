@@ -55,7 +55,7 @@ module.exports = (app, server) => (req, res, next) => {
   io.on('connection', socket => {
     console.log(`User connected: ${socket.id}`);
     socket.onAny((eventName, data) => {
-      const path = eventName.replace(/^\/+/, "").replace(/\/+$/, "").trim();
+      const path = "/" + eventName.replace(/^\/+/, "").replace(/\/+$/, "").trim();
       req.method = "SOCKET";
       req.url = path;
 
