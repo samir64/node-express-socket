@@ -1,5 +1,7 @@
 # Express.js socket handler
 
+This package is an easy way to implement and manage socket connections and also make a simple way to migrate from REST API to Socket API.
+
 ## Installation instruction:
 
 `npm install node-express-socket`

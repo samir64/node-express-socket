@@ -116,7 +116,7 @@ module.exports = (app, server) => (req, res, next) => {
 
       // console.log(path);
 
-      app._router.handle({ ...req, query: getQueryString(eventName), body: data, path }, { ...res, setHeader: () => { }, send: send(socket) }, next);
+      app._router.handle({ ...req, query: getQueryString(eventName), body: data, path }, { ...res, status: () => { }, setHeader: () => { }, send: send(socket) }, next);
     });
   });
 
