@@ -1,6 +1,8 @@
 const express = require("express");
 const Router = express.Router;
 
+Router.socket = () => { };
+
 express.Router = options => {
   const router = Router(options);
 
