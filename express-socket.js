@@ -1,9 +1,7 @@
 const express = require("express");
 const Router = express.Router;
 
-Router.socket = () => { };
-
-express.Router = options => {
+const ExpressRouter = options => {
   const router = Router(options);
 
   Router.socket = (path, ...callbacks) => {
@@ -21,6 +19,11 @@ express.Router = options => {
 
   return router;
 };
+
+// Router.socket = () => { };
+ExpressRouter();
+
+express.Router = ExpressRouter;
 
 module.exports = (app, server) => (req, res, next) => {
   const sendToUsers = (ids, path, p) => {
@@ -118,7 +121,11 @@ module.exports = (app, server) => (req, res, next) => {
 
       // console.log(path);
 
-      app._router.handle({ ...req, query: getQueryString(eventName), body: data, path }, { ...res, status: () => { }, setHeader: () => { }, send: send(socket) }, next);
+      const newReq = { ...req, query: getQueryString(eventName), body: data, path };
+      const newRes = { ...res, setHeader: () => { }, send: send(socket) };
+      newRes.status = () => newRes;
+
+      app._router.handle(newReq, newRes, next);
     });
   });
 
